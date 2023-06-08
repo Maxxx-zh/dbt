@@ -2,20 +2,13 @@
 version: 2
 
 models:
-    - name: my_first_dbt_model
-      description: "A starter dbt model"
-      columns:
-          - name: id
-            description: "The primary key for this table"
-            tests:
-                - unique
-                - not_null
+  - name: read_bigquery_data
+    description: "Reads data from BigQuery"
 
-    - name: my_second_dbt_model
-      description: "A starter dbt model"
-      columns:
-          - name: id
-            description: "The primary key for this table"
-            tests:
-                - unique
-                - not_null
+  - name: data_pipeline
+    description: "Creates a Feature Group populated with data from BigQuery table"
+
+  - name: schedule_pipeline
+    description: "Parses todays data and inserts into existing feature group"
+ 
+
