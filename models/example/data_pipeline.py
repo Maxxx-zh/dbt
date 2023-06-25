@@ -10,7 +10,7 @@ def model(dbt, session):
     dbt.config(
         submission_method="cluster",
         dataproc_cluster_name="hops-dbt",
-    )
+    ) 
 
     # Read data_pipeline Python model
     data_pipeline = dbt.ref("feature_group_creation")
