@@ -9,14 +9,8 @@ def model(dbt, session):
         dataproc_cluster_name="hops-dbt",
     )
 
-    # Read read_bigquery_data SQL model
-    my_sql_model_df = dbt.ref("read_bigquery_data")
-
-    # Convert timestamp column to long type
-    my_sql_model_df = my_sql_model_df.withColumn("base_time", unix_timestamp(my_sql_model_df["base_time"]).cast("long"))
-
-    # Pring a type of the model(Pyspark DataFrame)
-    print(type(my_sql_model_df))
+    # Read data_pipeline Python model
+    data_pipeline = dbt.ref("data_pipeline")
 
     # Connect to the Hopsworks feature store
     hsfs_connection = hsfs.connection(
@@ -33,14 +27,10 @@ def model(dbt, session):
     # Get or create Feature Group
     feature_group = feature_store.get_or_create_feature_group(
         name = 'weather_fg',
-        description = 'Feature Group description',
         version = 1,
-        primary_key = ['city_name', 'hour'],
-        event_time = 'base_time',
-        online_enabled = True,
     )
 
     # Insert data into Feature Group
-    feature_group.insert(my_sql_model_df)   
+    feature_group.insert(data_pipeline)   
 
-    return my_sql_model_df
+    return data_pipeline
