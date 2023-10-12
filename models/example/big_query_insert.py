@@ -2,7 +2,7 @@ def model(dbt, session):
     # Setup cluster usage
     dbt.config(
         submission_method="cluster",
-        dataproc_cluster_name="{YOUR_DATAPROC_CLUSTER_NAME}",
+        dataproc_cluster_name="hops-dbt",
     )
 
     # Read data_pipeline Python model

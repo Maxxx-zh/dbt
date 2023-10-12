@@ -6,7 +6,7 @@ def model(dbt, session):
     # Setup cluster usage
     dbt.config(
         submission_method="cluster",
-        dataproc_cluster_name="{YOUR_HOPSWORKS_API_KEY}",
+        dataproc_cluster_name="hops-dbt",
     )
 
     # Read data_pipeline Python model
@@ -14,10 +14,10 @@ def model(dbt, session):
 
     # Connect to the Hopsworks feature store
     hsfs_connection = hsfs.connection(
-        host="{YOUR_HOST}",
-        project="{YOUR_PROJECT_NAME}",
+        host="be60e8e0-68dc-11ee-bc84-514626b986ca.cloud.hopsworks.ai",
+        project="dbt",
         hostname_verification=False,
-        api_key_value="{YOUR_HOPSWORKS_API_KEY}",
+        api_key_value="ObMMR17zLKYl3NA3.vBgRcJsxJDubjNEQIo7SqgoCyaMzWVRJexSreOONg9pG6TQl0SpL0d1iEVqoYdZZ",
         engine='spark',
     )
 
@@ -26,7 +26,7 @@ def model(dbt, session):
 
     # Get or create Feature Group
     feature_group = feature_store.get_or_create_feature_group(
-        name = '{YOUR_FEATURE_GROUP_NAME}',
+        name = 'weather',
         version = 1,
     )
 
