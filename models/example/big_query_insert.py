@@ -1,11 +1,8 @@
-# Imports
-import hsfs
-
 def model(dbt, session):
     # Setup cluster usage
     dbt.config(
         submission_method="cluster",
-        dataproc_cluster_name="hops-dbt",
+        dataproc_cluster_name="{YOUR_DATAPROC_CLUSTER_NAME}",
     )
 
     # Read data_pipeline Python model

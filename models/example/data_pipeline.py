@@ -3,13 +3,12 @@ import requests
 import datetime
 import time
 import pandas as pd
-import hsfs
 
 def model(dbt, session):
     # Setup cluster usage
     dbt.config(
         submission_method="cluster",
-        dataproc_cluster_name="hops-dbt",
+        dataproc_cluster_name="{YOUR_DATAPROC_CLUSTER_NAME}",
     ) 
 
     # Read data_pipeline Python model
@@ -112,6 +111,9 @@ def model(dbt, session):
         "Kyiv": [50.45, 30.52]
     }
 
+    # Get today's date
+    today = datetime.datetime.today().date().strftime("%Y-%m-%d")
+
     # Parse and insert updated data from observations endpoint
     parsed_df = pd.DataFrame()
 
@@ -119,7 +121,7 @@ def model(dbt, session):
         weather_df_temp = get_weather_data_from_open_meteo(
             city_name,
             city_coord,
-            '2023-06-05',
+            today,
         )
         parsed_df = pd.concat([parsed_df, weather_df_temp])
 
@@ -134,23 +136,7 @@ def model(dbt, session):
         labels=['Low', 'Moderate', 'High', 'Very High']
     ).astype(str)
     parsed_df["base_time"] = parsed_df["base_time"].astype(int) // 10**9
-
-
-    parsed_df[[
-        'city_name',
-        'base_time',
-        'forecast_hr',
-        'temperature',
-        'relative_humidity',
-        'weather_code',
-        'wind_speed',
-        'wind_direction',
-        'index_column',
-        'hour',
-        'day',
-        'temperature_diff',
-        'wind_speed_category',
-    ]].head(3)
+    parsed_df.fillna(0, inplace=True)
 
     print('✅ Parsing finished successfully!!!🎉')
   
